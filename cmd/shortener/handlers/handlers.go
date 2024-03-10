@@ -17,21 +17,21 @@ func mainPostHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain")
 	body, _ := io.ReadAll(r.Body)
 	if body != nil {
-		originalUrl := string(body)
-		shortUrl := compressString(originalUrl)
+		originalURL := string(body)
+		shortURL := compressString(originalURL)
 		host := r.Host
-		shortUrls[shortUrl] = originalUrl
+		shortUrls[shortURL] = originalURL
 
 		w.WriteHeader(http.StatusCreated)
-		w.Write([]byte(fmt.Sprintf("http://%s/%s", host, shortUrl)))
+		w.Write([]byte(fmt.Sprintf("http://%s/%s", host, shortURL)))
 	}
 
 }
 
 func mainGetHandler(w http.ResponseWriter, r *http.Request) {
-	page := r.URL.Path[1:]
-	originalUrl := shortUrls[page]
-	w.Header().Set("Location", originalUrl)
+	firstPathSegment := r.URL.Path[1:]
+	originalURL := shortUrls[firstPathSegment]
+	w.Header().Set("Location", originalURL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
 }
 
