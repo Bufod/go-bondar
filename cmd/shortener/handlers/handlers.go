@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 )
 
 var shortUrls = make(map[string]string)
@@ -29,10 +30,14 @@ func mainPostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func mainGetHandler(w http.ResponseWriter, r *http.Request) {
-	firstPathSegment := r.URL.Path[1:]
+	firstPathSegment := getFirstPathSegment(r.URL)
 	originalURL := shortUrls[firstPathSegment]
 	w.Header().Set("Location", originalURL)
 	w.WriteHeader(http.StatusTemporaryRedirect)
+}
+
+func getFirstPathSegment(url *url.URL) string {
+	return url.Path[1:]
 }
 
 func MainHandler(w http.ResponseWriter, r *http.Request) {
