@@ -29,8 +29,8 @@ func MainPostHandler(c *gin.Context) {
 }
 
 func MainGetHandler(c *gin.Context) {
-	shortUrl := c.Param("shortURL")
-	originalURL := shortUrls[shortUrl]
+	shortURL := c.Param("shortURL")
+	originalURL := shortUrls[shortURL]
 	c.Redirect(http.StatusTemporaryRedirect, originalURL)
 }
 
